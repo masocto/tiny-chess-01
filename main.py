@@ -18,17 +18,17 @@ def M(f):
   v=p.lower();o=q[0];r=int(q[1]);d=-1 if s else 1
   if v=="p":
    if 0<r+d<=8 and not b.get(o+str(r+d)):l.append(q+o+str(r+d))
-   if(r==7 and s)or(r==2 and not s):
+   if(r==7 and not s)or(r==2 and s):
     if not b.get(o+str(r+d))and not b.get(o+str(r+2*d)):l.append(q+o+str(r+2*d))
    for x in[-1,1]:
     t=chr(ord(o)+x)
     if"a"<=t<="h":
      u=b.get(t+str(r+d),".")
      if u!="."and u.islower()!=p.isupper():l.append(q+t+str(r+d))
-   if(r==4 and s)or(r==5 and not s):
+   if(r==4 and not s)or(r==5 and s):
     for x in[-1,1]:
      t=chr(ord(o)+x)
-     if"a"<=t<="h"and b.get(t+str(r))==("P"if not s else"p"):l.append(q+t+str(r+d))
+     if"a"<=t<="h"and b.get(t+str(r))==("p"if s else"P"):l.append(q+t+str(r+d))
   elif v=="n":
    for dx,dy in[(2,1),(1,2),(-1,2),(-2,1),(-2,-1),(-1,-2),(1,-2),(2,-1)]:
     t=chr(ord(o)+dx);u=r+dy
@@ -83,7 +83,7 @@ def C(f):
  for x in M(f):
   v=-A(x,4,-20000,-b)
   if v>b:b=v;z=x
- return z
+ return z or list(M(f))[0]
 def R(p,b):
  req=urllib.request.Request(U+p,json.dumps(b).encode(),{"content-type":"application/json"})
  try:return json.load(urllib.request.urlopen(req))
