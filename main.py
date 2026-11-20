@@ -10,18 +10,27 @@ def B(f):
    if x.isdigit():c+=int(x)
    else:r["abcdefgh"[c]+str(8-i)]=x;c+=1
  return r
-def E(f,m):
+def E(f):
  b=B(f);s=0
  for p in b.values():s+=V[p.lower()]*(1 if p.isupper()else-1)
- t=m[2:4]
- if t in b and b[t].islower()!=b[m[:2]].isupper():
-  s+=V[b[t].lower()]*(1 if b[m[:2]].isupper()else-1)
  return s
-def C(g):
- l=g["legal_moves"];b=B(g["fen"]);m=l[0];s=-1e9
+def S(f,m):
+ b=B(f);t=m[2:4];v=0
+ if t in b and b[t].islower()!=b[m[:2]].isupper():
+  v=V[b[t].lower()]*(-1 if b[m[:2]].isupper()else 1)
+ return E(f)+v
+def A(f,d,a,b,l):
+ if d==0:return E(f)
+ v=-20000
  for x in l:
-  v=E(g["fen"],x)
-  if v>s:s=v;m=x
+  v=max(v,-A(x,d-1,-b,-a,[]))
+  if v>=b:return v
+ return v
+def C(g):
+ l=g["legal_moves"];m=l[0];b=-20000
+ for x in l:
+  v=-A(x,2,-20000,-b,[])
+  if v>b:b=v;m=x
  return m
 def R(p,b):
  req=urllib.request.Request(U+p,json.dumps(b).encode(),{"content-type":"application/json"})
